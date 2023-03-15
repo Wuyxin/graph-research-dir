@@ -4,8 +4,9 @@ import pandas as pd
 from tqdm import tqdm
 
 client = openreview.Client(baseurl='https://api.openreview.net')
+year = 2021
 
-submissions = client.get_all_notes(invitation="ICLR.cc/2023/Conference/-/Blind_Submission", details='directReplies')
+submissions = client.get_all_notes(invitation=f"ICLR.cc/{year}/Conference/-/Blind_Submission", details='directReplies')
 
 reviews = []
 for submission in submissions:
@@ -15,7 +16,10 @@ scores_dict = {}
 for r in reviews:
     if r['forum'] not in scores_dict:
         scores_dict[r['forum']] = []
-    scores_dict[r['forum']].append(int(r['content']['recommendation'].split(':')[0]))
+    try:
+        scores_dict[r['forum']].append(int(r['content']['recommendation'].split(':')[0]))
+    except:
+        scores_dict[r['forum']].append(int(r['content']['rating'].split(':')[0]))
 
 statistics = []
 all_data, abstracts = [], []
@@ -56,5 +60,5 @@ df.to_csv('output.csv', index='True')
 txt = ''
 for abstract in abstracts:
     txt += abstract + '\n'
-with open('abstracts.txt', 'w') as f:
+with open(f'abstracts/{year}.txt', 'w') as f:
     f.write(txt)

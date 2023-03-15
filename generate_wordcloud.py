@@ -11,11 +11,13 @@ import matplotlib.pyplot as plt
 
 from wordcloud import WordCloud
 
+year = 2023
+
 # get data directory (using getcwd() is needed to support running example in generated IPython notebook)
 d = path.dirname(__file__) if "__file__" in locals() else os.getcwd()
 
 # Read the whole text.
-text = open(path.join(d, 'abstracts.txt')).read()
+text = open(path.join(d, f'abstracts/{year}.txt')).read()
 
 # Generate a word cloud image
 # wordcloud = WordCloud().generate(text)
@@ -31,7 +33,7 @@ plt.figure(figsize=(12,7))
 plt.imshow(wordcloud, interpolation="bilinear")
 plt.axis("off")
 plt.tight_layout()
-plt.savefig('abstract.png', dpi=1000)
+plt.savefig(f'figures/{year}.png', dpi=1000)
 plt.show()
 
 # The pil way (if you don't have matplotlib)
