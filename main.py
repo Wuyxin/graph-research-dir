@@ -38,7 +38,8 @@ for year in [2021, 2022, 2023]:
         std_score = np.std(scores)
         _title = title.lower()
         _keywords = [k.lower() for k in keywords]
-        _abstract = abstract.lower()
+        _abstract = abstract.lower() 
+        _abstract = _abstract.replace('\n', ' ')
         if (
             (('graph ' in _keywords) or ('graph ' in _abstract) or ('graph ' in _title) or \
             (' graph' in _keywords) or (' graph' in _abstract) or (' graph' in _title)) and \

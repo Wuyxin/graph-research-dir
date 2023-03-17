@@ -10,26 +10,25 @@ from os import path
 import matplotlib
 import matplotlib.pyplot as plt
 
+import numpy as np 
 from wordcloud import WordCloud
-import nltk
 
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from nltk.tokenize import word_tokenize
 nltk.download('punkt')
 
 fdists = {}
-interest_list = ['molecule', 'protein', 'transformer', 'causal', 'KG', 'sample', 'generalization',\
-                 'contrastive', 'dynamic', 'spectral', 'distribution', 'domain', 'pretraining', 'architecture',\
-                 'scale', 'attention', 'unsupervised', 'semisupervised', 'pretraining', 'robustness',\
-                 'bias', 'explanation', 'generative', 'knowledgegraph']
+interest_list = ['molecule', 'protein', 'transformer', 'causal', 'sample', 'generalization',\
+                 'contrastive', 'dynamic', 'spectral', 'distribution', 'pretrain', 'architecture',\
+                 'scale', 'attention', 'unsupervised', 'semisupervised', 'robustness',\
+                 'bias', 'explanation', 'generative', 'knowledge graph', 'reinforcement']
 
-font = {
-        'weight' : 'bold',
-        'size'   : 14,
-        }
-
+font = {'weight' : 'bold',
+        'size'   : 14}
 matplotlib.rc('font', **font)
+
 for year in [2021, 2022, 2023]:
 
     # get data directory (using getcwd() is needed to support running example in generated IPython notebook)
@@ -60,19 +59,25 @@ for year in [2021, 2022, 2023]:
         if w == 'sampling' or w == 'samples' or w == 'sample':
             text_list.append('sample')
             continue
+        if 'generaliz' in w:
+            text_list.append('generalization')
+            continue
         for i_w in interest_list:
+            if i_w == 'knowledge graph' and 'knowledgegraph' in w:
+                text_list.append(i_w)
+                break
             if i_w in w:
-                if i_w == 'knowledgegraph':
-                    text_list.append('knowledge graph')
-                else:
-                    text_list.append(i_w)
+                text_list.append(i_w)
                 break
     fdist = FreqDist(text_list)
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(9, 8))
+    _dict = {i_w: fdist[i_w] for i_w in interest_list}
     
-    fdist.plot(30, title=f'ICLR {year} - Frequency words in GNN research')
+    index = np.argsort(-np.array(list(_dict.values())))
+    plt.plot(np.array(list(_dict.values()))[index], np.array(list(_dict.keys()))[index])
+    plt.title(f'ICLR {year} - Frequency words in GNN research')
+    plt.grid()
     plt.tight_layout()
-    plt.xticks(rotation=90)
     plt.savefig(f'figures/{year}-dist.png', dpi=300)
     plt.cla()
     fdists[year] = fdist
