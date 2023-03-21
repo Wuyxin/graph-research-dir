@@ -43,7 +43,7 @@ for year in [2021, 2022, 2023]:
         if (
             (('graph ' in _keywords) or ('graph ' in _abstract) or ('graph ' in _title) or \
             (' graph' in _keywords) or (' graph' in _abstract) or (' graph' in _title)) and \
-            (not 'graphics' in _keywords) and (not 'graphics' in _abstract) and (not 'graphics' in _title)
+            (not 'graphic' in _keywords) and (not 'graphic' in _abstract) and (not 'graphic' in _title)
         ) or \
         ('gnn' in _keywords) or ('gnn' in _abstract) or ('gnn' in _title) or \
         ('gcn' in _keywords) or ('gcn' in _abstract) or ('gcn' in _title):

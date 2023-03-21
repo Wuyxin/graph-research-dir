@@ -90,8 +90,10 @@ for year in [2021, 2022, 2023]:
     
 # positive 
 interest_list = np.array(interest_list)
-idx = {'pos': (values[-1] >= values[0]) * (values[-1] >= values[1])  * (values[1] >= values[0]), 'neg': (values[-1] < values[0]) * (values[1] < values[0]) * (values[1] > values[-1])}
-for key in ['pos', 'neg']:
+idx = {'pos': (values[-1] >= values[0]) * (values[-1] >= values[1])  * (values[1] >= values[0]) , 'neg': (values[-1] < values[0]) * (values[1] < values[0]) * (values[1] > values[-1])}
+idx['pos'][values[-1] >= 2 * values[0]] = True
+idx['neutral'] = (idx['pos'] == False) * (idx['neg'] == False)
+for key in ['pos', 'neg', 'neutral']:
     
     font = {'weight' : 'bold',
             'size'   : 40}
